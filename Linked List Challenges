@@ -1,0 +1,85 @@
+class Node<T> {
+  T value;
+  Node<T>? next;
+
+  Node(this.value);
+}
+
+/// Challenge 1: Print in Reverse
+void printInReverse<T>(Node<T>? node) {
+  if (node == null) return;
+  printInReverse(node.next);
+  print(node.value);
+}
+
+/// Challenge 2: Find the Middle Node
+Node<T>? findMiddleNode<T>(Node<T>? head) {
+  var slow = head;
+  var fast = head;
+  while (fast != null && fast.next != null) {
+    slow = slow!.next;
+    fast = fast.next!.next;
+  }
+  return slow;
+}
+
+/// Challenge 3: Reverse a Linked List
+Node<T>? reverseList<T>(Node<T>? head) {
+  Node<T>? prev;
+  var current = head;
+
+  while (current != null) {
+    var next = current.next;
+    current.next = prev;
+    prev = current;
+    current = next;
+  }
+
+  return prev;
+}
+
+/// Challenge 4: Remove All Occurrences
+Node<T>? removeAll<T>(Node<T>? head, T target) {
+  while (head != null && head.value == target) {
+    head = head.next;
+  }
+
+  var current = head;
+  while (current?.next != null) {
+    if (current!.next!.value == target) {
+      current.next = current.next!.next;
+    } else {
+      current = current.next;
+    }
+  }
+
+  return head;
+}
+
+//test 
+void main() {
+  final node1 = Node(1);
+  final node2 = Node(2);
+  final node3 = Node(3);
+  final node4 = Node(2);
+  final node5 = Node(5);
+
+  node1.next = node2;
+  node2.next = node3;
+  node3.next = node4;
+  node4.next = node5;
+
+  print('Original list:');
+  printInReverse(node1);
+
+  print('\nMiddle node: ${findMiddleNode(node1)?.value}');
+
+  final reversed = reverseList(node1);
+  print('\nReversed list:');
+  printInReverse(reversed);
+
+  final cleaned = removeAll(reversed, 2);
+  print('\nList after removing all 2s:');
+  printInReverse(cleaned);
+}
+
